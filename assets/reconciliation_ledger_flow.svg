@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 440" width="1100" height="440" role="img" aria-label="Qistas-Core Arabic Normalization, 4-Pass Funnel, and Double-Entry Conservation">
+  <defs>
+    <linearGradient id="bgFlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="flowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="440" rx="12" fill="url(#bgFlow)" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Header -->
+  <text x="550" y="32" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15.5" font-weight="700" letter-spacing="0.6">BILINGUAL NORMALIZATION TRACE · 4-PASS RECONCILIATION FUNNEL · DOUBLE-ENTRY LEDGER MATRIX</text>
+  <text x="550" y="52" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Deterministic Resolution of Arabic Ligatures, Gateway Fees, Batch Subset-Sums, and Cryptographic Audit Chaining</text>
+
+  <!-- Left Panel: Byte-Level Arabic Normalization Trace -->
+  <g transform="translate(24, 68)">
+    <rect width="324" height="348" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="162" y="26" text-anchor="middle" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="700">A. ARABIC / ENGLISH NFKC TRACE (F2, EC-A)</text>
+
+    <rect x="16" y="42" width="292" height="48" rx="6" fill="#1e293b" stroke="#334155"/>
+    <text x="26" y="60" fill="#94a3b8" font-family="ui-monospace, Consolas, monospace" font-size="10">Raw Bank Wire Payer Input:</text>
+    <text x="26" y="79" fill="#f8fafc" font-family="ui-monospace, Consolas, monospace" font-size="10.5">"\u200fشركة ا\ufef7هرام ذ.م.م"</text>
+
+    <rect x="16" y="100" width="292" height="48" rx="6" fill="#1e293b" stroke="#334155"/>
+    <text x="26" y="118" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="10">1. NFKC Ligature Decomposition:</text>
+    <text x="26" y="137" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="10.5">U+FEF7 (ﻷ) → U+0644 (ل) + U+0623 (أ)</text>
+
+    <rect x="16" y="158" width="292" height="48" rx="6" fill="#1e293b" stroke="#334155"/>
+    <text x="26" y="176" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="10">2. Strip Bidi (Cf), Harakat (Mn) &amp; Tatweel:</text>
+    <text x="26" y="195" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="10.5">Remove U+200F (RLM), U+064B..065F, U+0640</text>
+
+    <rect x="16" y="216" width="292" height="48" rx="6" fill="#1e293b" stroke="#334155"/>
+    <text x="26" y="234" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="10">3. Orthographic &amp; Digit Unification:</text>
+    <text x="26" y="253" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="10.5">أ,إ,آ,ٱ→ا · ة→ه · ى,ئ,ی→ي · ٠..٩/۰..۹→0..9</text>
+
+    <rect x="16" y="274" width="292" height="58" rx="6" fill="#064e3b" stroke="#10b981"/>
+    <text x="26" y="293" fill="#6ee7b7" font-family="ui-monospace, Consolas, monospace" font-size="10" font-weight="700">4. Guarded Legal Affix Strip (EC-A):</text>
+    <text x="26" y="311" fill="#ecfdf5" font-family="ui-monospace, Consolas, monospace" font-size="10.5">Strip {"شركه", "ذ م م"} (≥ 1 core token)</text>
+    <text x="26" y="326" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700">Canonical Output: "الاهرام"</text>
+  </g>
+
+  <!-- Arrow Panel A -> Panel B -->
+  <line x1="350" y1="242" x2="368" y2="242" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Center Panel: 4-Pass Matching Funnel -->
+  <g transform="translate(372, 68)">
+    <rect width="344" height="348" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+    <text x="172" y="26" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="700">B. 4-PASS DETERMINISTIC FUNNEL (F3–F5)</text>
+
+    <rect x="16" y="42" width="312" height="64" rx="6" fill="#1e293b" stroke="#10b981"/>
+    <text x="26" y="61" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="700">Pass 1 · Exact Ref &amp; Duplicate Guard</text>
+    <text x="26" y="79" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5">extract_ref_codes → EXACT / FEE_ADJUSTED_REF</text>
+    <text x="26" y="96" fill="#fca5a5" font-family="ui-monospace, Consolas, monospace" font-size="10">Settled ref → DUPLICATE_PAYMENT_ALERT (EC-D)</text>
+
+    <rect x="16" y="116" width="312" height="60" rx="6" fill="#1e293b" stroke="#10b981"/>
+    <text x="26" y="135" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="700">Pass 2 · 1-to-1 Entity + Weekend Lag</text>
+    <text x="26" y="153" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5">norm_entity · 0 ≤ Δday ≤ max_settlement_lag</text>
+    <text x="26" y="169" fill="#94a3b8" font-family="ui-monospace, Consolas, monospace" font-size="10">Rank: (fee_err, abs(lag), day_ordinal, id)</text>
+
+    <rect x="16" y="186" width="312" height="72" rx="6" fill="#1e293b" stroke="#10b981"/>
+    <text x="26" y="205" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="700">Pass 3 · Iterative B&amp;B Subset-Sum (EC-C)</text>
+    <text x="26" y="223" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5">2 ≤ k ≤ 4 · Explicit Stack (0 Recursion)</text>
+    <text x="26" y="240" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5">Suffix Underflow + gross_upper Pruning</text>
+    <text x="26" y="253" fill="#94a3b8" font-family="ui-monospace, Consolas, monospace" font-size="10">Rank: (fee_err, len(S), sorted_ids)</text>
+
+    <rect x="16" y="268" width="312" height="64" rx="6" fill="#1e293b" stroke="#f59e0b"/>
+    <text x="26" y="287" fill="#fbbf24" font-family="ui-monospace, Consolas, monospace" font-size="11" font-weight="700">Pass 4 · Monotonic Residual &amp; Suspense</text>
+    <text x="26" y="305" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5">net &lt; res → PARTIAL · net == res → EXACT</text>
+    <text x="26" y="322" fill="#94a3b8" font-family="ui-monospace, Consolas, monospace" font-size="10">net &gt; res → OVERPAYMENT · Else → ORPHAN</text>
+  </g>
+
+  <!-- Arrow Panel B -> Panel C -->
+  <line x1="718" y1="242" x2="736" y2="242" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Right Panel: Double-Entry Conservation & Audit Chain -->
+  <g transform="translate(740, 68)">
+    <rect width="336" height="348" rx="10" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="168" y="26" text-anchor="middle" fill="#fbbf24" font-family="ui-monospace, Consolas, monospace" font-size="12" font-weight="700">C. DOUBLE-ENTRY &amp; BLAKE2b (R0.3, R0.4)</text>
+
+    <rect x="16" y="42" width="304" height="194" rx="6" fill="#1e293b" stroke="#334155"/>
+    <text x="24" y="62" fill="#f8fafc" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700">MatchKind → Balanced Postings (DR == CR):</text>
+
+    <text x="24" y="84" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="10">• Settled (fee = 0):</text>
+    <text x="30" y="100" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="9.5">DR BANK_CASH (net) | CR AR_RECEIVABLE (gross)</text>
+
+    <text x="24" y="120" fill="#38bdf8" font-family="ui-monospace, Consolas, monospace" font-size="10">• Settled (fee &gt; 0):</text>
+    <text x="30" y="136" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="9.5">DR BANK + DR GATEWAY_FEE | CR AR_RECEIVABLE</text>
+
+    <text x="24" y="156" fill="#fbbf24" font-family="ui-monospace, Consolas, monospace" font-size="10">• Overpayment Credit:</text>
+    <text x="30" y="172" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="9.5">DR BANK_CASH | CR AR (gross) + CR CUST_CREDIT</text>
+
+    <text x="24" y="192" fill="#fca5a5" font-family="ui-monospace, Consolas, monospace" font-size="10">• Duplicate Alert / Orphan Deposit:</text>
+    <text x="30" y="208" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="9.5">DR BANK_CASH | CR CUST_CREDIT / SUSPENSE</text>
+    <text x="30" y="226" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="10" font-weight="700">Invariant: ∑ debit_cents == ∑ credit_cents &gt; 0</text>
+
+    <rect x="16" y="248" width="304" height="84" rx="6" fill="#1e1b4b" stroke="#818cf8"/>
+    <text x="24" y="268" fill="#a5b4fc" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700">64-Bit BLAKE2b Tamper-Evident Chain:</text>
+    <text x="24" y="287" fill="#e0e7ff" font-family="ui-monospace, Consolas, monospace" font-size="10">H₀ = 0x5149535441533236 ("QISTAS26")</text>
+    <text x="24" y="304" fill="#cbd5e1" font-family="ui-monospace, Consolas, monospace" font-size="9.5">Hᵢ = BLAKE2b_8(seq|kind|id|ids|g|n|f|d|Hᵢ₋₁)</text>
+    <text x="24" y="321" fill="#34d399" font-family="ui-monospace, Consolas, monospace" font-size="10" font-weight="700">verify_audit_chain(chain) → True (O(N))</text>
+  </g>
+</svg>
