@@ -1,4 +1,4 @@
-# Qistas-Core (`قِسْطَاس`) — Deterministic Bilingual Financial Reconciliation & Double-Entry Verification Engine
+﻿# Qistas-Core (`قِسْطَاس`) — Deterministic Bilingual Financial Reconciliation & Double-Entry Verification Engine
 
 <p align="center">
   <img src="assets/qistas_hero_banner.png" width="100%" alt="Qistas-Core Hero Banner"/>
@@ -37,7 +37,7 @@ When enterprise payment rails in Egypt and the broader MENA corridor settle comm
 | Failure ID | Failure Mode & Attack Vector | Qistas-Core Deterministic Engineering Countermeasure |
 | :---: | :--- | :--- |
 | **`F2` / `EC-A`** | **Arabic Presentation Forms-B (`U+FE70..U+FEFF`), Orthographic Variants & Bidi Spoofing** | Deterministic 5-stage Arabic/English canonicalizer ([`normalizer.py`](src/qistas/normalizer.py)): `NFKC` compatibility decomposition (`ﻻ → ل + ا`, `ﻷ → ل + أ`), stripping of `Mn` harakat, `Cf` bidi format controls, and Tatweel (`\u0640`), Eastern/Persian digit translation (`٠-٩`/`۰-۹ → 0-9`), orthographic unification (`أ/إ/آ/ٱ → ا`, `ة → ه`, `ى/ئ/ی → ي`, `ک → ك`, `ؤ → و`), and guarded legal-affix stripping (`EC-A`). |
-| **`R0.1` / `R0.2`** | **IEEE-754 Float Drift & Gateway Fee Rounding Discrepancies** | **Zero-Float / Zero-Decimal Law** (AST-enforced across `src/` and `tests/`). All monetary values are 64-bit integer `cents` (`1 EGP = 100 cents`) and rates are integer `permille` (`25 = 2.5%`). `FeeSchedule(fixed_fee_cents, rate_permille, min_fee_cents, max_fee_cents, tolerance_cents, max_settlement_lag_days)` computes exact integer ceiling division (`ceil_div`) and checks `|(G − B) − Fee(G)| ≤ tolerance_cents`. |
+| **`R0.1` / `R0.2`** | **IEEE-754 Float Drift & Gateway Fee Rounding Discrepancies** | **Zero-Float / Zero-Decimal Law** (AST-enforced across `src/` and `tests/`). All monetary values are 64-bit integer `cents` (`1 EGP = 100 cents`) and rates are integer `permille` (`25 = 2.5%`). `FeeSchedule(fixed_fee_cents, rate_permille, min_fee_cents, max_fee_cents, tolerance_cents, max_settlement_lag_days)` computes exact integer ceiling division (`ceil_div`) and checks `abs((G − B) − Fee(G)) ≤ tolerance_cents`. |
 | **`F5` / `EC-C`** | **Combinatorial Explosion & Non-Deterministic Tie-Breaking in Batch Subset-Sum (`Pass 3`)** | NASA Power of 10 **Zero Recursion** (`FF-3`). Explicit iterative Branch-and-Bound solver ([`matcher.py`](src/qistas/matcher.py)) bounded to `MAX_BATCH_SIZE = 4` (`k ∈ {2, 3, 4}`) and `MAX_EXPANSIONS = 10_000`. Evaluates zero-fee, single-batch fee (`Fee(∑ G)`), and per-invoice fee (`∑ Fee(G)`), breaking ties deterministically via total order `(fee_error, len(S), sorted_ids)`. |
 | **`R0.3` / `F6` / `R0.4`** | **Silent Value Creation/Destruction, Duplicate Settlements & Post-Facto Ledger Tampering** | **TigerStyle Double-Entry Conservation** ([`ledger.py`](src/qistas/ledger.py)): Every `JournalEntry` across all 9 `MatchKind` outcomes enforces `∑ Debits = ∑ Credits` over 5 accounts (`AR_RECEIVABLE`, `BANK_CASH`, `GATEWAY_FEE_EXPENSE`, `SUSPENSE_CLEARING`, `CUSTOMER_CREDIT_LIABILITY`) and links into a 64-bit `BLAKE2b` (`digest_size=8`) audit chain from `GENESIS_HASH_U64 = 0x5149535441533236` (`"QISTAS26"`). |
 | **`F7`** | **Malformed Input Payloads, Float/NaN Injection, Memory Exhaustion & Whole-Batch Crashes** | **4-Stage JSON Boundary Gate** ([`intake_gate.py`](src/qistas/intake_gate.py)): Stage 1 UTF-8 decode, NUL-byte ban & byte cap (`MAX_PAYLOAD_BYTES = 4_194_304` (`4 MiB`)), Stage 2 iterative depth-8 bracket scanner (`MAX_JSON_DEPTH = 8`), Stage 3 zero-float `json.loads` trap (`parse_float=str`, `MAX_INT_DIGITS = 15`, no `NaN`/`Inf`, no duplicate keys), and Stage 4 `qistas.bundle/v1` schema (`MAX_RECORDS = 10_000`) & row-level `RecordRejection` isolation. |
@@ -76,10 +76,10 @@ Every bank transaction produces a `ReconciliationMatch` and a balanced `JournalE
 | `MatchKind` | Pass | Trigger Condition (`B = tx.net_cents`, `R = residual_cents(inv)`) | `BANK_CASH` (DR) | `GATEWAY_FEE_EXPENSE` (DR) | `AR_RECEIVABLE` (CR) | `CUSTOMER_CREDIT_LIABILITY` (CR) | `SUSPENSE_CLEARING` (CR) |
 | :--- | :---: | :--- | :---: | :---: | :---: | :---: | :---: |
 | **`EXACT_REF`** | `1` | Memo ref matches open `inv` ∧ `B = R` | `B` | `0` | `R` | `0` | `0` |
-| **`FEE_ADJUSTED_REF`** | `1` | Memo ref matches open `inv` ∧ `|(R − B) − Fee(R)| ≤ tol` | `B` | `R − B` | `R` | `0` | `0` |
+| **`FEE_ADJUSTED_REF`** | `1` | Memo ref matches open `inv` ∧ `abs((R − B) − Fee(R)) ≤ tol` | `B` | `R − B` | `R` | `0` | `0` |
 | **`DUPLICATE_PAYMENT_ALERT`** | `1` | Memo ref matches already-settled `inv` (`R = 0`) | `B` | `0` | `0` | `B` | `0` |
 | **`ENTITY_EXACT`** | `2` | Best open `inv` for `norm_entity` in `[0, max_settlement_lag_days]` ∧ `B = R` | `B` | `0` | `R` | `0` | `0` |
-| **`ENTITY_FEE_ADJUSTED`** | `2` | Best open `inv` for `norm_entity` in `[0, max_settlement_lag_days]` ∧ `|(R − B) − Fee(R)| ≤ tol` | `B` | `R − B` | `R` | `0` | `0` |
+| **`ENTITY_FEE_ADJUSTED`** | `2` | Best open `inv` for `norm_entity` in `[0, max_settlement_lag_days]` ∧ `abs((R − B) − Fee(R)) ≤ tol` | `B` | `R − B` | `R` | `0` | `0` |
 | **`BATCH_SUBSET_SUM`** | `3` | Optimal subset `S` (`2 ≤ \|S\| ≤ 4`) matching `B` under `(fee_err, len(S), sorted_ids)` | `B` | `R_sum − B` | `R_sum` | `0` | `0` |
 | **`PARTIAL_PAYMENT`** | `4a` | Memo ref or unique open entity match ∧ `0 < B < R` (outside fee window) | `B` | `0` | `B` | `0` | `0` |
 | **`OVERPAYMENT_CREDIT`** | `4b` | Memo ref or unique open entity match ∧ `B > R > 0` | `B` | `0` | `R` | `B − R` | `0` |
