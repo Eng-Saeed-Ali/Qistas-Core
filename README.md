@@ -151,7 +151,7 @@ Every commit is verified by **110 automated tests** (`pytest -v`), **0 lint find
 | **`FF-5`** | **TigerStyle Assertion Density Gate (`test_ff5_assertion_density_ast`)** | Verifies every `FunctionDef` across `src/qistas/*.py` contains `>= 2` runtime `assert` statements (`100%` compliance). |
 | **`FF-6`** | **Immutable Slotted Dataclasses Gate (`test_ff6_immutable_slot_dataclasses_ast`)** | Verifies all `11` domain dataclasses across `src/qistas/*.py` declare `@dataclass(slots=True, frozen=True)` (`100%` compliance). |
 | **`FF-7` / `7b`** | **Brute-Force Oracle Differential Fuzzers (`test_ff7_*` & `test_ff7b_*` — `1,050 Seeds`)** | [`tests/_oracle.py`](tests/_oracle.py) (`itertools.combinations` reference oracle) matches [`reconcile()`](src/qistas/matcher.py) across `50 + 1,000 = 1,050` deterministic seeds with coverage floors across all `MatchKind`s. |
-| **`FF-8`** | **SVG XML, Asset, LOC & Documentation Integrity Gate (`test_ff8_svg_and_docs_integrity`)** | Parses `assets/*.svg` (`0` unused markers, `<= 46` chars per panel text), verifies all `<img src="...">` assets, zero LaTeX math delimiters in all 4 `.md` specs, `pyproject.toml` metadata, and exact `src/qistas/*.py` LOC parity. |
+| **`FF-8`** | **SVG XML, Asset, LOC & Documentation Integrity Gate (`test_ff8_svg_and_docs_integrity`)** | Parses `assets/*.svg` (`0` unused markers, `<= 46` chars per panel text), verifies all embedded `<img>` assets, zero LaTeX math delimiters in all 4 `.md` specs, `pyproject.toml` metadata, and exact `src/qistas/*.py` LOC parity. |
 
 ### 5.2 Repository Module Inventory & Line-of-Code (LOC) Budget
 
